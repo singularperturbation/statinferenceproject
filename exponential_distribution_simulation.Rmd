@@ -1,17 +1,46 @@
-Statistical Inference Project
+---
+title: "Statistical Inference Project"
+author: Sloane Simmons
+date: November 23, 2014
+output: pdf_document
+---
+Statistical Inference Project - Exponential Distributions
 ========================================================
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **Help** toolbar button for more details on using R Markdown).
+We can generate a vector of observations with the R function `rexp(n,lambda)`:
 
-When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r}
-summary(cars)
+```{r,results='markup',eval=TRUE,echo=TRUE}
+rexp(40,0.2)
 ```
 
-You can also embed plots, for example:
+We generate a large number of these vectors (arbitrarily chosen to be 1000) and then take the mean of each:
+```{r,results='markup',eval=TRUE,echo=TRUE}
+expmeans <- 1:1000
+
+for (i in 1:1000) { 
+  expmeans[i] <- mean(rexp(40,0.2))
+}
+
+head(expmeans)
+```
+
+Exponential distributions are centered at $1/\lambda$ with variance $1/(\lambda^2)$; for $\lambda$ = 0.2, this gives a $\mu = 5$ with $\sigma^2 = 25$ ($\sigma = 5.0$).  From the Law of Large numbers, our distribution of sample means should be centered at $\mu$ with a standard deviation of $\frac{\sigma}{\sqrt{n}}$, which here is: 
+```{r,eval=TRUE} 
+sqrt(5/8)
+```
+
+Comparing this to our results, we see it is centered at `mean(expmeans)`=`r mean(expmeans)` with standard deviation `sd(expmeans)`=`r sd(expmeans)`.  This compares well with the theoretical distribution (within one standard deviation).
+
+```{r}
+sdist <- sd(expmeans)
+samplemean <- mean(expmeans)
+(samplemean - 5.0)/(5/sqrt(40)) # Number of standard deviations sample mean is from calculated mean
+```
+
+We can see fairly easily from a summary and histogram of the data that it is roughly fits a normal distribution centered at 5.  (Even though each indvidual measurement is of an exponential variable, the means of these measurements (due to the law of large numbers) follows a normal distribution, with sample mean centered near that of the population mean.)
 
 ```{r fig.width=7, fig.height=6}
-plot(cars)
+summary(expmeans)
+hist(expmeans)
 ```
 
