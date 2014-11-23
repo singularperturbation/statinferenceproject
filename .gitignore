@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+*.md
+*.html
+figure/
+*.Rproj
